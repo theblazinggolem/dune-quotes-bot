@@ -52,20 +52,28 @@ for (const file of eventFiles) {
 }
 
 console.log('Checking token...');
-if (!token) {
-    console.error('ERROR: DISCORD_TOKEN is not defined in environment variables!');
+const cleanToken = token ? token.trim() : '';
+if (!cleanToken) {
+    console.error('ERROR: DISCORD_TOKEN is missing or empty!');
 } else {
-    console.log(`Token Info - Length: ${token.length}, Prefix: ${token.substring(0, 10)}...`);
+    console.log(`Token Info - Length: ${cleanToken.length}, Prefix: ${cleanToken.substring(0, 10)}... (Original Length: ${token.length})`);
+
+    // Connectivity test
+    fetch('https://discord.com/api/v10/gateway').then(res => {
+        console.log(`- Connectivity test: ${res.status} ${res.statusText}`);
+    }).catch(err => {
+        console.error('- Connectivity test failed:', err.message);
+    });
+
+    client.on('debug', info => console.log(`[DEBUG] ${info}`));
+    client.on('warn', warning => console.warn(`[WARN] ${warning}`));
+    client.on('error', error => console.error(`[ERROR] ${error}`));
+    client.on('shardReady', shardId => console.log(`[SHARD READY] Shard ${shardId}`));
+
+    console.log('Attempting to log in...');
+    client.login(cleanToken).then(() => {
+        console.log('Login successful');
+    }).catch(err => {
+        console.error('Login failed:', err);
+    });
 }
-
-client.on('debug', info => console.log(`[DEBUG] ${info}`));
-client.on('warn', warning => console.warn(`[WARN] ${warning}`));
-client.on('error', error => console.error(`[ERROR] ${error}`));
-client.on('shardReady', shardId => console.log(`[SHARD READY] Shard ${shardId}`));
-
-console.log('Attempting to log in...');
-client.login(token).then(() => {
-    console.log('Login successful');
-}).catch(err => {
-    console.error('Login failed:', err);
-});
