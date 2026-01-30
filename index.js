@@ -54,7 +54,14 @@ for (const file of eventFiles) {
 console.log('Checking token...');
 if (!token) {
     console.error('ERROR: DISCORD_TOKEN is not defined in environment variables!');
+} else {
+    console.log(`Token Info - Length: ${token.length}, Prefix: ${token.substring(0, 10)}...`);
 }
+
+client.on('debug', info => console.log(`[DEBUG] ${info}`));
+client.on('warn', warning => console.warn(`[WARN] ${warning}`));
+client.on('error', error => console.error(`[ERROR] ${error}`));
+client.on('shardReady', shardId => console.log(`[SHARD READY] Shard ${shardId}`));
 
 console.log('Attempting to log in...');
 client.login(token).then(() => {
