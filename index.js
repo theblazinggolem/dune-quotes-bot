@@ -3,6 +3,9 @@ const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 require('dotenv').config({ quiet: true });
 const token = process.env.DISCORD_TOKEN;
+const keepAlive = require('./keep_alive');
+
+keepAlive();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 

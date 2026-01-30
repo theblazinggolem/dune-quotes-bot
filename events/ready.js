@@ -1,12 +1,10 @@
 const { Events, ActivityType } = require('discord.js');
-const keepAlive = require('../keep_alive');
 
 module.exports = {
     name: Events.ClientReady,
     once: true,
     execute(client) {
         console.log(`Ready! Logged in as ${client.user.tag}`);
-        keepAlive();
 
         const statuses = [
             { name: 'looking for wormsign', type: ActivityType.Custom },

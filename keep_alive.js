@@ -7,7 +7,8 @@ const server = http.createServer((req, res) => {
 });
 
 module.exports = () => {
-    server.listen(3000, () => {
-        console.log('Keep-Alive Server is running on port 3000');
+    const port = process.env.PORT || 3000;
+    server.listen(port, () => {
+        console.log(`Keep-Alive Server is running on port ${port}`);
     });
 };
